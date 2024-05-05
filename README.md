@@ -10,10 +10,10 @@ Improve testability and cohesion when I have long-run synchronous operations. Se
 - add step1 = queue step1
 - add step2  = queue step2
 - run:
-	- operator dequeue step1 
+  - operator dequeue step1 
   - step 1 modifies the state to 2 
-	- operator dequeue step2
-	- step 2 modifies the state to 3... 
+  - operator dequeue step2
+  - step 2 modifies the state to 3... 
 
 and so on... 
 
