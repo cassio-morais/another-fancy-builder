@@ -1,4 +1,4 @@
-## State builder
+# State builder
 
 I don't know if it seems like a builder pattern, a little bit of a state pattern, or a little chain of responsibility pattern... by the way, for me, it seems like a 'state builder'. It's a builder with a chain of classes with a method that operates over a state. Those classes are enqueued and then dequeued when it is executed.
 
@@ -63,7 +63,7 @@ class AddRandomNumToCurrentValueStep : IStep<SampleState>
 }
 ```
 
-but who knows if a state is consistent or not is the state itself 
+but who knows if a state is consistent or not is the state itself
 
 ```c#
 public class SampleState : IState
@@ -77,6 +77,24 @@ public class SampleState : IState
 }
 ```
 
-Also was made an extension to operate over lists to increment the solution (the reason why this solution was made).
+Running...
 
-Eg. A list of emails to reset the password, reset 2FA, and add some information from another service.... etc. Add processing state to each item of a list of emails like unprocessed or processed and the final test against the whole processing state or individual email processing state
+```
+test@test:~/projects/csharp/DotnetStateBuilder/Samples$ dotnet run
+
+initialState = 0
+First Step: AddOneToCurrentValueStep = 1
+Second Step: AddRandomNumToCurrentValueStep = -8
+State Inconsistent. Current value = -8
+
+test@test~/projects/csharp/DotnetStateBuilder/Samples$ dotnet run
+
+initialState = 0
+First Step: AddOneToCurrentValueStep = 1
+Second Step: AddRandomNumToCurrentValueStep = 0
+State is ok. Current value = 0
+```
+
+*Ok, it is a very simple example. But it's just a quick demonstration.* :')
+
+Also was made an extension to operate over lists to increment the solution (the reason why this solution was made). Eg.: A list of emails to reset the password, reset 2FA, and add some information from another service.... etc. Add processing state to each item of a list of emails like unprocessed or processed and the final test against the whole processing state or individual email processing state
