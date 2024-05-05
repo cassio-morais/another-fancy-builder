@@ -6,14 +6,15 @@ When I made this solution, I thought about synchronous operations step by step i
 
 Improve testability and cohesion when I have long-run synchronous operations. Separate steps with its business concern, test them individually, and increment as needed.
 
-- initial state  = 1
-- add step1 = queue step1
-- add step2  = queue step2
+- initial state  = 0
+- add step1 => queue step1
+- add step2 => queue step2
 - run:
   - operator dequeue step1
-  - step 1 modifies the state to 2
+  - step 1 modifies the state to 1
   - operator dequeue step2
-  - step 2 modifies the state to 3...
+  - step 2 modifies the state to random number...
+- finally test the processing state to know if is consistent or inconsistent
 
 and so on...
 
@@ -33,6 +34,47 @@ if(stateBuilder.ProcessingState.IsInconsistent())
     Console.WriteLine($"State Inconsistent. Current value = {stateBuilder.ProcessingState.CurrentValue}");
 else 
     Console.WriteLine($"State is ok. Current value = {stateBuilder.ProcessingState.CurrentValue}");
+```
+
+The 2 steps
+
+```c#
+class AddOneToCurrentValueStep : IStep<SampleState>
+{
+    public Task ExecuteAsync(SampleState state)
+    {
+        state.CurrentValue =  1;
+        Console.WriteLine($"First Step: {nameof(AddOneToCurrentValueStep)} = {state.CurrentValue}");
+
+        return Task.CompletedTask;
+    }
+}
+
+class AddRandomNumToCurrentValueStep : IStep<SampleState>
+{
+    public Task ExecuteAsync(SampleState state)
+    {
+        Random rnd = new Random();
+        state.CurrentValue = rnd.Next(-10, 10);
+        Console.WriteLine($"Second Step: {nameof(AddRandomNumToCurrentValueStep)} = {state.CurrentValue}");
+
+        return Task.CompletedTask;
+    }
+}
+```
+
+but who knows if a state is consistent or not is the state itself 
+
+```c#
+public class SampleState : IState
+{
+    public int CurrentValue { get; set; }
+
+    public bool IsInconsistent()
+    {
+        return CurrentValue < 0;  
+    }
+}
 ```
 
 Also was made an extension to operate over lists to increment the solution (the reason why this solution was made).
