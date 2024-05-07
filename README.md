@@ -2,7 +2,7 @@
 
 I don't know if it seems like a builder pattern, a little bit of a state pattern, or a little chain of responsibility pattern... by the way, for me, it seems like a 'state builder'. It's a builder with a chain of classes with a method that operates over a state. Those classes are enqueued and then dequeued when it is executed.
 
-When I made this solution, I thought about synchronous operations step by step in which operation is tested separately and it is possible to increment operation over and over again... and in the final execution, I can test if a state is consistent.
+When I made this solution, I thought about synchronous operations step by step in which operation is tested separately and it is possible to increment operation over and over again... and after the final execution, I can test if a state is consistent.
 
 Improve testability and cohesion when I have long-run synchronous operations. Separate steps with its business concern, test them individually, and increment as needed.
 
@@ -79,7 +79,7 @@ public class SampleState : IState
 
 Running...
 
-```
+```bash
 test@test:~/projects/csharp/DotnetStateBuilder/Samples$ dotnet run
 
 initialState = 0
@@ -97,4 +97,49 @@ State is ok. Current value = 0
 
 *Ok, it is a very simple example. But it's just a quick demonstration.* :')
 
-Also was made an extension to operate over lists to increment the solution (the reason why this solution was made). Eg.: A list of emails to reset the password, reset 2FA, and add some information from another service.... etc. Add processing state to each item of a list of emails like unprocessed or processed and the final test against the whole processing state or individual email processing state
+An extension was also developed to operate over lists for incrementing the solution (the reason for its creation). For example, a list of emails may require actions such as resetting passwords, resetting 2FA, and incorporating additional information from another service. Processing states were added to each item in the email list, indicating whether they were unprocessed or processed. The final test checks the processing state of the entire list or individual email processing states.
+
+Imagine the following list:
+
+```json
+[
+   "somewrongemailformat",
+   "valid@emailcom",
+   "doesnotexistinourdatabase@email.com"
+]
+```
+
+There are four steps:
+
+- Verify email format.
+- Check if the email exists; if not, create it.
+- Reset 2FA credentials if they exist; otherwise, prompt the user to use 2FA.
+- Retrieve information about emails from another service.
+
+We need to execute these operations step by step (and they can be more than one operation inside each step) and in the specified order. Any step may fail for an individual item in the list.
+
+Using this solution, we can incrementally process the emails and remove those with problems from the subsequent steps. This results in something like the following:
+
+```json
+[
+  { 
+    "email" : "somewrongemailformat",
+    "status" : "UnProcessed", 
+    "error" : "email is not a valid email"
+  },
+  { 
+    "email" : "valid@emailcom",
+    "status" : "Processed", 
+    "error" : null
+  },
+    { 
+    "email" : "doesnotexistinourdatabase@email.com",
+    "status" : "Processed", 
+    "error" : null
+  }
+]
+```
+
+In demonstration above, the first email *'somewrongemailformat'* it will be set as Unprocessed in the first step and remove from emails processing.
+
+[UNDER CONSTRUCTION]
