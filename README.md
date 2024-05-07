@@ -116,7 +116,7 @@ There are four steps:
 - Reset 2FA credentials if they exist; otherwise, prompt the user to use 2FA.
 - Retrieve information about emails from another service.
 
-We need to execute these operations step by step (and they can be more than one operation inside each step) and in the specified order. Any step may fail for an individual item in the list.
+The constraint here is processing step by step waiting for the previous step to finish and just processing items that are not set to unprocessed. Like a pipeline...
 
 Using this solution, we can incrementally process the emails and remove those with problems from the subsequent steps. This results in something like the following:
 
@@ -140,6 +140,6 @@ Using this solution, we can incrementally process the emails and remove those wi
 ]
 ```
 
-In demonstration above, the first email *'somewrongemailformat'* it will be set as Unprocessed in the first step and remove from emails processing.
+disclaimer.: a result of 1 million emails processing is not a thing the user wants to see 'now'... follow the constraints.
 
 [UNDER CONSTRUCTION]
