@@ -1,4 +1,4 @@
-# State builder
+# Another fancy builder
 
 I don't know if it seems like a builder pattern, a little bit of a state pattern, or a little chain of responsibility pattern... by the way, for me, it seems like a 'state builder'. It's a builder with a chain of classes with a method that operates over a state. Those classes are enqueued and then dequeued when it is executed.
 
