@@ -1,6 +1,6 @@
 # Another fancy builder
 
-I don't know if it seems like a builder pattern, a little bit of a state pattern, or a little chain of responsibility pattern... by the way, for me, it seems like a 'state builder'. It's a builder with a chain of classes with a method that operates over a state. Those classes are enqueued and then dequeued when it is executed.
+It seems like a builder pattern, a state pattern, or a little chain of responsibility pattern... by the way, for me, it seems like a 'state builder'. It's a builder with a chain of classes and a method that operates over a state. Those classes are enqueued and then dequeued when it is executed.
 
 When I made this solution, I thought about operations step by step in which operation is tested separately and it is possible to increment operation over and over again... and after the final execution, I can test if a state is consistent.
 
